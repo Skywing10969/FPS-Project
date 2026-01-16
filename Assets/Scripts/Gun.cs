@@ -12,6 +12,11 @@ public class Gun : MonoBehaviour
     public GameObject bullet;           //bullet prefab
     public Transform bulletSpawnPoint;  //muzzle / spawn position
 
+    //Recoil and flash
+    public float recoilDistance = 0.1f;
+    public float recoilSpeed = 15f;
+    public GameObject weaponFlash;
+
     //State
     private int currentAmmo;
     private bool isReloading = false;
@@ -46,6 +51,12 @@ public class Gun : MonoBehaviour
 
         //spawn bullet at muzzle
         Instantiate(bullet, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+
+        //spawn brief muzzle flash
+        Instantiate(weaponFlash, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+
+        StopCoroutine(nameof(Recoil));          //ensure single recoil
+        StartCoroutine(nameof(Recoil));         //run recoil animation
     }
 
     IEnumerator Reload()        //simple reload animation
@@ -65,7 +76,7 @@ public class Gun : MonoBehaviour
         }
 
         t = 0f;
-        while (t < halfReload)
+        while (t < halfReload)      //target -> initial
         {
             t += Time.deltaTime;
             transform.localRotation = Quaternion.Slerp(targetRotation, initialRotation, t / halfReload);
@@ -80,6 +91,29 @@ public class Gun : MonoBehaviour
     {
         if (isReloading || currentAmmo == maxSize) return;      //skip if busy/full
         StartCoroutine(Reload());                               //start reload
+    }
+
+    IEnumerator Recoil()            //position-based recoil
+    {
+        Vector3 recoilTarget = initialPosition + new Vector3(0f, 0f, recoilDistance);
+        float t = 0f;
+
+        while (t < 1f)
+        {
+            t += Time.deltaTime * recoilSpeed;
+            transform.localPosition = Vector3.Lerp(initialPosition, recoilTarget, t);
+            yield return null;
+        }
+
+        t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime * recoilSpeed;
+            transform.localPosition = Vector3.Lerp(initialPosition, recoilTarget, t);
+            yield return null;
+        }
+
+        transform.localPosition = initialPosition;
     }
 
     // Update is called once per frame

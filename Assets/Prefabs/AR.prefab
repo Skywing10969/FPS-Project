@@ -98,6 +98,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6559362985659250037}
+  - component: {fileID: 4520302269054603053}
   m_Layer: 0
   m_Name: AR
   m_TagString: Untagged
@@ -128,6 +129,26 @@ Transform:
   - {fileID: 7576839964966942220}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4520302269054603053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5786097810451525583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ec5b9e1d4a6e648b9d0e3cbaed6719, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Gun
+  reloadTime: 1
+  fireRate: 0.15
+  maxSize: 20
+  bullet: {fileID: 5341742223406746680, guid: 9c3cddd6060b7cc4eadfb9cefcf6e7db, type: 3}
+  bulletSpawnPoint: {fileID: 2379546462925861346}
+  recoilDistance: 0.1
+  recoilSpeed: 15
+  weaponFlash: {fileID: 8396369247584790427, guid: f20a3106f7c5d5d4488aaefaa8362285, type: 3}
 --- !u!1 &5836183803064680627
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,7 +530,7 @@ Transform:
   m_GameObject: {fileID: 7373288577291434855}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.65, y: 0.07, z: 0.005}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

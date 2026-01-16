@@ -17,9 +17,14 @@ public class Bullet : MonoBehaviour
         Destroy(gameObject, lifetime);                  //auto-destroy after lifetime
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        Destroy(gameObject);    //destroy on collision
+    }
+
     // Update is called once per frame
     void Update()
     {
-        Destroy(gameObject);    //destroy on collision
+        
     }
 }
