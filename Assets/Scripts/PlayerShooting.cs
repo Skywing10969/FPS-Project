@@ -5,6 +5,7 @@ public class PlayerShooting : MonoBehaviour
 {
     public Gun gun;                 //current gun reference
     private bool isHoldingShoot;    //true while left mouse is held
+    public Transform gunHolder;     
 
     void OnShoot()                  //called when shoot action starts
     {
