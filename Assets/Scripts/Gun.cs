@@ -27,6 +27,8 @@ public class Gun : MonoBehaviour
     private Vector3 initialPosition;                                    //starting local position
     private Vector3 reloadRotationOffset = new Vector3(66f, 50f, 50f);  //reload tilt
 
+    public GameObject droppedWeapon;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -115,6 +117,13 @@ public class Gun : MonoBehaviour
         }
 
         transform.localPosition = initialPosition;
+    }
+
+    public void Drop()
+    {
+        Instantiate(droppedWeapon, transform.position, transform.rotation);
+
+        Destroy(gameObject);
     }
 
     // Update is called once per frame

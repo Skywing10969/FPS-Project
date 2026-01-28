@@ -25,6 +25,15 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    public void OnDrop()
+    {
+        if (gun != null)
+        {
+            gun.Drop();
+            gun = null;
+        }
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
