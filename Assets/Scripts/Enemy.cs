@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;                           // Needed for NavMeshAgent
 
@@ -29,6 +30,14 @@ public class Enemy : MonoBehaviour
     // Enemy states
     public enum State { Idle, Patrolling, Chasing, Attacking }
     public State state = State.Idle;             // Default state is Idle
+
+    public GameObject bulletPrefab;
+    public Transform bulletSpawnPoint;
+    public float bloom;
+    public float fireRate;
+    public GameObject weaponFlash;
+
+    private float lastShotTime = 0f;
 
     void Start()
     {
@@ -129,6 +138,7 @@ public class Enemy : MonoBehaviour
             state = State.Patrolling;      // Switch to patrol after idle
             idleTimeCounter = idleTime;    // Reset idle timer
         }
+        canSeePlayer = false;
     }
 
     private void Patrolling()
@@ -149,13 +159,16 @@ public class Enemy : MonoBehaviour
         {
             agent.SetDestination(currentTarget); // Move toward current target
         }
+
+        canSeePlayer = false;
     }
 
     private void Attacking()
     {
         idleTimeCounter = idleTime;
         agent.ResetPath();                  // Stand still while "attacking"
-        // Shooting logic will be added in next episode
+
+        Shoot();
 
         if (Vector3.Distance(transform.position, playerTransform.position) > attackDistance || !canSeePlayer)
         {
@@ -226,5 +239,38 @@ public class Enemy : MonoBehaviour
         }
 
         SetLastKnownPlayerPosition();
+    }
+
+    private void Shoot()
+    {
+        if (Time.time > lastShotTime + fireRate)
+        {
+            Vector3 directionToPlayer = playerTransform.position - transform.position;
+            directionToPlayer.Normalize();
+
+            Quaternion bulletRotation = Quaternion.LookRotation(directionToPlayer);
+
+            float maxInaccuracy = 10f;
+            float currentInaccuracy = bloom * maxInaccuracy;
+
+            float randomYaw = Random.Range(-currentInaccuracy, currentInaccuracy);
+            float randomPitch = Random.Range(-currentInaccuracy, currentInaccuracy);
+
+            bulletRotation *= Quaternion.Euler(randomPitch, randomYaw + 90f, 0f);
+
+            Instantiate(
+                bulletPrefab,
+                bulletSpawnPoint.position,
+                bulletSpawnPoint.rotation
+            );
+
+            Instantiate(
+                weaponFlash,
+                bulletSpawnPoint.position,
+                bulletSpawnPoint.rotation
+            );
+
+            lastShotTime = Time.time;
+        }
     }
 }
