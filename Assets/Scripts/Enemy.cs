@@ -18,8 +18,8 @@ public class Enemy : MonoBehaviour
     public Vector3 currentTarget;                // Current patrol target
     public float positionThreshold = 2f;         // Distance considered "reached" for patrol point
     public float idleTime = 3f;                  // Idle duration at patrol points
-    public float attackDistance = 5f;            // Distance at which enemy attacks
-    public float maxVisionDistance = 15f;        // How far enemy can see the player
+    public float attackDistance = 30f;            // Distance at which enemy attacks
+    public float maxVisionDistance = 50f;        // How far enemy can see the player
     public float minimumChasingHealth = 30f;     // Below this, enemy will avoid player
     public Transform[] patrolPoints;             // Array of patrol points
     private float idleTimeCounter;               // Counter for idle duration
