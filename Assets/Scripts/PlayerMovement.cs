@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public AudioClip footStepSFX;
+
     public float moveSpeed = 5f;    //movement speed
     public float jumpForce = 5f;    //jump impulse
 
@@ -19,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>(); //cache Rigidbody
+        StartCoroutine(PlayFootStep());
     }
 
     // Update is called once per frame
@@ -66,5 +71,17 @@ public class PlayerMovement : MonoBehaviour
 
         //true if sphere overlaps with any collider or groundmask within grounddistance
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+    }
+
+    IEnumerator PlayFootStep()
+    {
+        while (true)
+        {
+            if (rb.linearVelocity.magnitude > 0.1f && isGrounded)
+            {
+                AudioManager.Instance.PlaySFX(footStepSFX);
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }
